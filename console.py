@@ -130,7 +130,13 @@ class HBNBCommand(cmd.Cmd):
         kwargs = {}
         for item in key_val:
             key, value = item.split("=")
-            kwargs[key] = value.strip('"')
+            value = value.strip('"')
+            if len(value.split('_')) > 1:
+                value = " ".join(value.split('_'))
+                # type cast value before adding to kwargs
+            if key in self.types:
+                value = self.types[key](value)
+            kwargs[key] = value
 
         new_instance = HBNBCommand.classes[cls_name](**kwargs)
         storage.save()

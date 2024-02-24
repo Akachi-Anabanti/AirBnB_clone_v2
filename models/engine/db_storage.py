@@ -2,10 +2,15 @@
 """DB storage module"""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy.ext.declarative import declarative_base
+from models.base_model import Base
 import os
+from models.city import City
+from models.state import State
+from models.place import Place
+from models.user import User
+from models.review import Review
+from models.amenity import Amenity
 
-Base = declarative_base()
 
 class DBStorage:
     __engine = None
@@ -13,9 +18,9 @@ class DBStorage:
 
     def __init__(self):
         """initialization method"""
-        HBNB_MYSQL_USER =  os.environ.get("HBNB_MYSQL_USER")
+        HBNB_MYSQL_USER = os.environ.get("HBNB_MYSQL_USER")
         HBNB_MYSQL_PWD = os.environ.get("HBNB_MYSQL_PWD")
-        HBNB_MYSQL_HOST =  os.environ.get("HBNB_MYSQL_HOST")
+        HBNB_MYSQL_HOST = os.environ.get("HBNB_MYSQL_HOST")
         HBNB_MYSQL_DB = os.environ.get("HBNB_MYSQL_DB")
 
         connection_string = 'mysql+mysqldb://{}:{}@{}/{}'.format(
@@ -41,7 +46,7 @@ class DBStorage:
                 key = f"{type(obj).__name__}.{obj.id}"
                 result_dict[key] = obj
         return result_dict
-    
+
     def new(self, obj):
         """Adds object to the current db
         session
@@ -61,8 +66,11 @@ class DBStorage:
         """
         create all tables in the Database
         """
+        from models.city import City
+        from models.state import State
+
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
-                expire_on_commit=False)
+                                       expire_on_commit=False)
         Session = scoped_session(session_factory)
         self.__session = Session()

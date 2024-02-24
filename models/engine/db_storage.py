@@ -1,7 +1,11 @@
 #!/usr/bin/python3
 """DB storage module"""
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.ext.declarative import declarative_base
 import os
+
+Base = declarative_base()
 
 class DBStorage:
     __engine = None
@@ -18,33 +22,47 @@ class DBStorage:
                 HBNB_MYSQL_USER, HBNB_MYSQL_PWD, HBNB_MYSQL_HOST,
                 HBNB_MYSQL_DB)
         self.__engine = create_engine(connection_string, pool_pre_ping=True)
+        if os.environ.get("HBNB_ENV") == "test":
+            Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         """Query current database session
         for all objects depending on name argument
         cls"""
 
+        result_dict = {}
+        classes = [User, State, City, Amenity, Place, Review]
+
         if cls is not None:
-            pass
-        pass
+            classes = [cls]
+        for cls in classes:
+            objects = self.__session.query(cls).all()
+            for obj in objects:
+                key = f"{type(obj).__name__}.{obj.id}"
+                result_dict[key] = obj
+        return result_dict
     
     def new(self, obj):
         """Adds object to the current db
         session
         """
-        pass
+        self.__session.add(obj)
 
     def save(self):
         """Commit all chagnes of the current sessin"""
-        pass
+        self.__session.commit()
 
     def delete(self, obj):
         """Delete obj from the current database session"""
-        pass
+        if obj is not None:
+            self.__session.delete(obj)
 
     def reload(self):
         """
         create all tables in the Database
         """
-        pass
-
+        Base.metadata.create_all(self.__engine)
+        session_factory = sessionmaker(bind=self.__engine,
+                expire_on_commit=False)
+        Session = scoped_session(session_factory)
+        self.__session = Session()

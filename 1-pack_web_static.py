@@ -15,7 +15,7 @@ def do_pack():
     try:
         if not os.path.exists("versions"):
             os.mkdir("versions")
-        local("tar -cvzf versions/{}".format(
+        local("tar -cvzf versions/{} web_static".format(
             file_name))
         return os.path.join("versions", file_name)
     except Exception as e:

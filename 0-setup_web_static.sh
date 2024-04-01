@@ -33,7 +33,7 @@ server {
     add_header X-Served-By $HOSTNAME;
 
     location /hbnb_static {
-    	alias /data/web_static_current;
+    	alias /data/web_static/current;
 	}
 }
 EOF"

@@ -22,27 +22,19 @@ chown -R ubuntu:ubuntu /data/
 
 cp /etc/nginx/sites-available/default{,.bak}
 
-cat << 'EOF' > /etc/nginx/sites-available/default
+HOSTNAME=$(hostname)
+sudo bash -c "cat << 'EOF' > /etc/nginx/sites-available/default
 server {
-	listen 80 default_server;
-	listen [::]:80 default_server;
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /etc/nginx/html;
+    index index.html index.htm;
 
-	root /var/www/html;
+    add_header X-Served-By $HOSTNAME;
 
-	index index.html index.htm index.nginx-debian.html;
-
-	server_name _;
-
-	location / {
-		# First attempt to serve request as file, then
-		# as directory, then fall back to displaying a 404.
-		try_files $uri $uri/ =404;
-	}
-
-	location /hbnb_static {
-		alias /data/web_static/current;
+    location /hbnb_static {
+    	alias /data/web_static_current;
 	}
 }
-EOF
-
-sudo service nginx start
+EOF"
+sudo service nginx restart

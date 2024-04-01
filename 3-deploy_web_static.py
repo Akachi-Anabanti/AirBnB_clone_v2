@@ -49,9 +49,9 @@ def do_deploy(archive_path):
 
 
 def deploy():
-    """excutes tasks"""
+    """excutes do_deploy and do_pack"""
     archive_path = do_pack()
-    if not archive_path:
+    if exists(archive_path) is False:
         return False
     res = do_deploy(archive_path)
     return res

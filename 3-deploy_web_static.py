@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 """A Fabric script to create .tgz file"""
 from fabric.api import local, run, env, put
 from datetime import datetime
@@ -54,4 +53,5 @@ def deploy():
     archive_path = do_pack()
     if not archive_path:
         return False
-    return do_deploy(archive_path)
+    res = do_deploy(archive_path)
+    return res

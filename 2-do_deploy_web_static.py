@@ -21,12 +21,12 @@ def do_deploy(archive_path):
 
     try:
         put(archive_path, '/tmp/')
-        run("mkdir -p {}/".format(path))
-        run("tar -xzf {} -C {}/".format(tmp, path))
+        run("sudo mkdir -p {}/".format(path))
+        run("sudo tar -xzf {} -C {}/".format(tmp, path))
         run("rm {}".format(tmp))
-        run("mv {}/web_static/* {}/".format(path, path))
+        run("sudo mv {}/web_static/* {}/".format(path, path))
         run("rm -rf /data/web_static_current")
-        run("ln -s {}/ /data/web_static/current".format(path))
+        run("sudo ln -s {}/ /data/web_static/current".format(path))
         return True
     except Exception as e:
         return False

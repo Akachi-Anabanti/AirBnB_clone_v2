@@ -61,7 +61,6 @@ class FileStorage:
         if key in self.__objects.keys():
             del self.__objects[key]
 
-
     def close(self):
         """Calls reload"""
         self.reload()

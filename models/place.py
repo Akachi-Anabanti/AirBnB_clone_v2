@@ -53,7 +53,7 @@ class Place(BaseModel, Base):
             """gets the list of review"""
             amenities_list = [amenity for amenity in
                               list(models.storage.all(Amenity).values())
-                            if amenity.id in self.amenity_ids]
+                              if amenity.id in self.amenity_ids]
             return amenities_list
 
         @amenities.setter

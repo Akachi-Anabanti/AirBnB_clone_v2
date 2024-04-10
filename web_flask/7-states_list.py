@@ -14,7 +14,7 @@ def list_states():
     """List the states
     Sorted by name"""
 
-    states = storage.all("State")
+    states = storage.all(State)
 
     return render_template("7-states_list.html", states=states)
 
@@ -22,7 +22,7 @@ def list_states():
 @app.teardown_appcontext
 def teardown(exc):
     """Remove current SQLALchemy session"""
-    storage.clos()
+    storage.close()
 
 
 if __name__ == "__main__":

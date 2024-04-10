@@ -14,6 +14,7 @@ def list_states():
     """List the states"""
 
     states = storage.all(State)
+    states = {k: v for k, v in sorted(states.items(), key=lambda item: item[1].name)}
 
     return render_template("7-states_list.html", states=states, title="States")
 

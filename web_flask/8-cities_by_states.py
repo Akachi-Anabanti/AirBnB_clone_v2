@@ -2,7 +2,6 @@
 """A FLask application"""
 from flask import Flask, render_template
 from models import storage
-from models.state import State
 import os
 
 app = Flask(__name__)
@@ -11,7 +10,7 @@ app = Flask(__name__)
 @app.route("/cities_by_states", strict_slashes=False)
 def city_by_state():
     """Get cities by the State"""
-    states = storage.all(State)
+    states = storage.all("State")
     states = states.values()
     db_type = os.environ.get("HBNB_TYPE_STORAGE")
     return render_template("8-cities_by_states.html",

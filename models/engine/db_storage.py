@@ -35,17 +35,20 @@ class DBStorage:
         for all objects depending on name argument
         cls"""
 
-        result_dict = {}
-        classes = [User, State, City, Amenity, Place, Review]
+        if cls is None:
+            objs = self.__session.query(State).all()
+            objs.extend(self.__session.query(City).all())
+            objs.extend(self.__session.query(User).all())
+            objs.extend(self.__session.query(Place).all())
+            objs.extend(self.__session.query(Review).all())
+            objs.extend(self.__session.query(Amenity).all())
 
-        if cls is not None:
-            classes = [cls]
-        for cls in classes:
-            objects = self.__session.query(cls).all()
-            for obj in objects:
-                key = f"{type(obj).__name__}.{obj.id}"
-                result_dict[key] = obj
-        return result_dict
+        else:
+            if type(cls) == str:
+                cls = eval(cls)
+            objs = self.__session.query(cls)
+        return {"{}.{}".format(type(obj).__name__, obj.id): obj
+                for obj in objs}
 
     def new(self, obj):
         """Adds object to the current db
@@ -69,6 +72,9 @@ class DBStorage:
         from models.city import City
         from models.state import State
         from models.user import User
+        from models.place import Place
+        from models.review import Review
+        from models.amenity import Amenity
 
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,

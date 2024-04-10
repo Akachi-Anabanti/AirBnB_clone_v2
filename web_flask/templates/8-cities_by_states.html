@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<HTML lang="en">
+    <HEAD>
+        <TITLE>HBNB</TITLE>
+    </HEAD>
+    <BODY>
+        <H1>States</H1>
+        <UL>
+	{%- for state in states|sort(attribute="name") %}
+		<LI>{{ state.id }}: <B>{{ state.name }}</B>
+		<UL>
+		{%- if db_type == 'db' -%}{% set cities = state.cities %}
+		{% else %}
+		{% set cities = state.cities() %}
+		{%- endif -%}
+		{%- for city in cities|sort(attribute="name") %}
+                        <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
+		{% endfor -%}
+                </UL>
+		</LI>
+	{% endfor -%}
+	</UL>
+    </BODY>
+</HTML>

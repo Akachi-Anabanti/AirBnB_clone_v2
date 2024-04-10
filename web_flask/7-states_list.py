@@ -11,13 +11,18 @@ app = Flask(__name__)
 
 @app.route("/states_list", strict_slashes=False)
 def list_states():
-    """List the states"""
+    """List the states
+    Sorted by name"""
 
-    states = storage.all(State)
-    states = {k: v for k, v in sorted(states.items(), key=lambda item: item[1].name)}
+    states = storage.all("State")
 
-    return render_template("7-states_list.html", states=states, title="States")
+    return render_template("7-states_list.html", states=states)
 
+
+@app.teardown_appcontext
+def teardown(exc):
+    """Remove current SQLALchemy session"""
+    storage.clos()
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

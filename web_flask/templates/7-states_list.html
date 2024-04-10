@@ -4,9 +4,9 @@
         <TITLE>HBNB</TITLE>
     </HEAD>
     <BODY>
-	    <H1>{{ title }}</H1>
+	    <H1>States</H1>
         <UL>
-		{% for state_id, state in states.items() %}
+		{% for state in states.values()|sort(arrtibute('name') %}
 		<LI>{{ state.id|e}}: <B>{{ state.name|e }}</B></LI>
 		{% endfor %}
 	</UL>

@@ -17,6 +17,7 @@ def city_by_state():
     return render_template("8-cities_by_states.html",
                            states=states, db_type=db_type)
 
+
 @app.teardown_appcontext
 def teardown(exc):
     storage.close()

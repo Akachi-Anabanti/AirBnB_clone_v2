@@ -12,9 +12,8 @@ def city_by_state():
     """Get cities by the State"""
     states = storage.all("State")
     states = states.values()
-    db_type = os.environ.get("HBNB_TYPE_STORAGE")
     return render_template("8-cities_by_states.html",
-                           states=states, db_type=db_type)
+                           states=states)
 
 
 @app.teardown_appcontext

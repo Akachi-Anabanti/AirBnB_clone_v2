@@ -9,13 +9,9 @@
 	{%- for state in states|sort(attribute="name") %}
 		<LI>{{ state.id }}: <B>{{ state.name }}</B>
 		<UL>
-		{%- if db_type == 'db' -%}{% set cities = state.cities %}
-		{% else %}
-		{% set cities = state.cities() %}
-		{%- endif -%}
-		{%- for city in cities|sort(attribute="name") %}
+		{% for city in state.cities|sort(attribute="name") %}
                         <LI>{{ city.id }}: <B>{{ city.name }}</B></LI>
-		{% endfor -%}
+		{% endfor %}
                 </UL>
 		</LI>
 	{% endfor -%}
